@@ -53,30 +53,23 @@ public:
 	void elementsAdder(int amountOfElements) {
 		for (int i = 0; i < amountOfElements; i++) {
 			int randomInt = rand() % 10000;
+			//clock_t start = clock();
 			addToTheEnd(randomInt);
+			//clock_t end = clock();
+			//double elapsedTimeAddingElements = (double)(end - start) / CLOCKS_PER_SEC * 1000;
+
+
 		}
 	}
 
 	string toString(int range) {
-		/*string res = "Size: " + to_string(size) + "\n";
-		res += "Capacity: " + to_string(capacity) + "\n";
-		res += "Elements: " + "\n";
-
-		for (int i = 0; i < range && i < size; i++) {
-			res += to_string(array[i]) + "\n";
-		}
-
-		cout << string(94, '-') << endl;
-		cout << "Memory address: " << array << endl;
-
-		return res;*/
-
+		
 		string res = "Size: " + to_string(size) + "\n";
 		res = res + "Capacity" + to_string(capacity) + "\n";
 		res = res + "Elements: " + "\n";
 		int count = 0;
 
-		for (int i = 0; i < range; i++) {
+		for (int i = 0; i < range && i < size; i++) {
 			res += to_string(array[i]) + "\n";
 		}
 
@@ -133,28 +126,32 @@ public:
 		}
 	}
 
+
 	void start(int maxPower, DynamicArray& sampleArray) {
+		double maxTimePerElement = 0.0; 
+		cout << "najgorszy czas: " << maxTimePerElement << endl;
 		for (int i = 1; i <= maxPower; i++) {
 			int k = pow(10, i);
-			cout << "Iteration number: " << i << endl;
+			cout << "Indeks: " << i << endl;
+			//clock_t start = clock(); 
 
-			auto start = chrono::high_resolution_clock::now();
-			sampleArray.initializer(14);
+			sampleArray.initializer(14);  
+			clock_t startElements = clock(); 
 			sampleArray.elementsAdder(k);
+			clock_t endElements = clock(); 
+			double addingTime = (double)(endElements - startElements) / CLOCKS_PER_SEC * 1000;
 			cout << sampleArray.toString(10);
-			auto end = chrono::high_resolution_clock::now();
 
-			auto timeElapsed = end - start;
-			auto convertToMs = chrono::duration_cast<chrono::milliseconds>(timeElapsed).count();
-			cout << "TIME: " << convertToMs << " ms" << endl;
+			//clock_t end = clock();
+			//double elapsedTime = (double)(end - start) / CLOCKS_PER_SEC * 1000;
 
-			sampleArray.getById(3);
-			sampleArray.updateById(4, 0);
-			cout << sampleArray.toString(10);
+			cout << "Czas pojedynczej operacji dodawania: " << addingTime << " ms" << endl;
+			if (addingTime > maxTimePerElement) {
+				maxTimePerElement = addingTime;
+				cout << "Nowy najgorszy czas: " << maxTimePerElement << " ms " << "przy indeksie: " << i << endl;
+			}
 		}
 	}
-
-
 
 };
 
